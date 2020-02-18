@@ -12,6 +12,7 @@ using System.Net.Mime;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using A100_AspNetCore.Models.A100_Models.DataBase;
+using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
 using Map = A100_AspNetCore.Services.MapEngineAPI.Models.Map;
 using Orientation = A100_AspNetCore.Services.MapEngineAPI.Enums.Orientation;
 
@@ -22,26 +23,24 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
         public List<int> WallsIndexes = new List<int>() { -3, -4, -5, -1 };
         public async Task<List<Map>> GetMap(int ResoultID)
         {
-            
-            
             List<Map> map = new List<Map>();
-            v_GetControl control = MyDB.db.v_GetControl.FirstOrDefault(i => i.ResoultID == ResoultID);
-            List<v_GetUnitNames> _blocks = MyDB.db.v_GetUnitNames.Where(i => i.ProjectNumber == control.ProjectNumber).ToList();
-            List<A100_MapEngine_DefectInfo> vikInfos =
-                MyDB.db.A100_MapEngine_DefectInfo.Where(el => el.ResoultID == ResoultID).ToList(); 
-            List<v_GetVikByUnit> viks = MyDB.db.v_GetVikByUnit.Where(vEl => vEl.ResoultID == ResoultID).ToList();
+            v_GetControl control = await MyDB.db.v_GetControl.FirstOrDefaultAsync(i => i.ResoultID == ResoultID);
+            List<v_GetUnitNames> _blocks = await MyDB.db.v_GetUnitNames.Where(i => i.ProjectNumber == control.ProjectNumber).ToListAsync();
+            List<A100_MapEngine_DefectInfo> vikInfos = await
+                MyDB.db.A100_MapEngine_DefectInfo.Where(el => el.ResoultID == ResoultID).ToListAsync(); 
+            List<v_GetVikByUnit> viks = await MyDB.db.v_GetVikByUnit.Where(vEl => vEl.ResoultID == ResoultID).ToListAsync();
             
             int k = 0;
             foreach (v_GetUnitNames block in _blocks)
             {
                 int layerK = 0;
 
-                List<v_GetMap> _stillages = MyDB.db.v_GetMap.Where(i => (i.ResoultID == ResoultID) && (i.MapUnit == block.MapUnit) && (i.cIndex >= 0)).ToList();
-                List<v_GetMap> _walls = MyDB.db.v_GetMap.Where(i =>
+                List<v_GetMap> _stillages = await MyDB.db.v_GetMap.Where(i => (i.ResoultID == ResoultID) && (i.MapUnit == block.MapUnit) && (i.cIndex >= 0)).ToListAsync();
+                List<v_GetMap> _walls = await MyDB.db.v_GetMap.Where(i =>
                     (i.ResoultID == ResoultID) &&
                     (i.MapUnit == block.MapUnit) &&
-                    (WallsIndexes.Contains((int)i.cIndex))).ToList();
-                List<v_GetMap> _texts = MyDB.db.v_GetMap.Where(i => (i.ResoultID == ResoultID) && (i.MapUnit == block.MapUnit) && (i.cIndex == -2)).ToList();
+                    (WallsIndexes.Contains((int)i.cIndex))).ToListAsync();
+                List<v_GetMap> _texts = await MyDB.db.v_GetMap.Where(i => (i.ResoultID == ResoultID) && (i.MapUnit == block.MapUnit) && (i.cIndex == -2)).ToListAsync();
 
                 if (_stillages.Count != 0 || _walls.Count != 0 || _texts.Count != 0)
                 {
@@ -532,17 +531,17 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
                 {}
             }
 
-            return map;
+            return await Task.Run(() => map);
         }
 
-        public Task<List<v_GetVik>> GetDefect(int ResoultID, string UnitName, List<int> StillagesID)
+        public async Task<List<v_GetVik>> GetDefect(int ResoultID, string UnitName, List<int> StillagesID)
         {
             List<v_GetVik> defects = new List<v_GetVik>();
 
 
             foreach (var stillageId in StillagesID)
             {
-                v_GetMap stillage = MyDB.db.v_GetMap.FirstOrDefault(el => el.MapID == stillageId);
+                v_GetMap stillage = await MyDB.db.v_GetMap.FirstOrDefaultAsync(el => el.MapID == stillageId);
             }
             
             
@@ -561,7 +560,7 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
             }
             */
             
-            return Task.Run(() => defects);
+            return await Task.Run(() => defects);
         }
         
         

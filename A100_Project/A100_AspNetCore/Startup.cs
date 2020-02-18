@@ -123,7 +123,9 @@ namespace A100_AspNetCore
                         "http://192.168.50.8",
                         "http://localhost:8081",
                         "http://192.168.50.8:11111",
-                        "http://localhost:3000"
+                        "http://localhost:3000",
+                        "https://localhost:3000",
+                        "https://a100mapengine.herokuapp.com"
                         );
                     builder.AllowAnyOrigin()
                    .AllowAnyMethod()
