@@ -12,6 +12,7 @@ using System.Net.Mime;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using A100_AspNetCore.Models.A100_Models.DataBase;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
 using Map = A100_AspNetCore.Services.MapEngineAPI.Models.Map;
 using Orientation = A100_AspNetCore.Services.MapEngineAPI.Enums.Orientation;
@@ -21,6 +22,7 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
     public class MapService : IMapService
     {
         public List<int> WallsIndexes = new List<int>() { -3, -4, -5, -1 };
+        // Получение и преобразование данных из формата A100 в формат A100ME
         public async Task<List<Map>> GetMap(int ResoultID)
         {
             List<Map> map = new List<Map>();
@@ -29,7 +31,8 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
             List<A100_MapEngine_DefectInfo> vikInfos = await
                 MyDB.db.A100_MapEngine_DefectInfo.Where(el => el.ResoultID == ResoultID).ToListAsync(); 
             List<v_GetVikByUnit> viks = await MyDB.db.v_GetVikByUnit.Where(vEl => vEl.ResoultID == ResoultID).ToListAsync();
-            
+            List<Deviation> deviations = await MyDB.db.Deviation.Where(dEl => dEl.ResoultId == ResoultID).ToListAsync();
+
             int k = 0;
             foreach (v_GetUnitNames block in _blocks)
             {
@@ -120,6 +123,52 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
                                 _y *= 6;
                             }
                         }
+
+                        List<Deviation> stillageDeviations = deviations.Where(dEl => dEl.Row == el.Row && dEl.Frame == el.Frame && dEl.SpecificationsId == el.SpecificationsID).ToList();
+                        List<DeviationItem> validDeviations = new List<DeviationItem>();
+                        foreach (var dEl in stillageDeviations)
+                        {
+                            var arrowDirection = dEl.ArrowDirection;
+                            var deviationLocation = dEl.DeviationLocationId;
+                            validDeviations.Add(new DeviationItem()
+                            {
+                                Id = dEl.DeviationId,
+                                Key = map[map.Count - 1].Layers[map[map.Count - 1].Layers.Count - 1].Key + "_stillage_" + el.MapID + "_deviation_" + dEl.DeviationId,
+                                StillageID = el.MapID
+                            });
+                            if (_orientation == Orientation.HORIZONTAL.ToString())
+                            {
+                                if (deviationLocation == 1)
+                                {
+                                    validDeviations[validDeviations.Count - 1].DeviationPosition =
+                                        SignaturePosition.RIGHT.ToString();
+                                } else if (deviationLocation == 2)
+                                {
+                                    validDeviations[validDeviations.Count - 1].DeviationPosition =
+                                        SignaturePosition.LEFT.ToString();
+                                }
+                            }
+                            else if (_orientation == Orientation.VERTICAL.ToString())
+                            {
+                                if (deviationLocation == 1)
+                                {
+                                    validDeviations[validDeviations.Count - 1].DeviationPosition =
+                                        SignaturePosition.BOTTOM.ToString();
+                                } else if (deviationLocation == 2)
+                                {
+                                    validDeviations[validDeviations.Count - 1].DeviationPosition =
+                                        SignaturePosition.TOP.ToString();
+                                }
+                            }
+
+                            if (arrowDirection == 4 || arrowDirection == 1)
+                            {
+                                validDeviations[validDeviations.Count - 1].ArrowFirstToSecond = false;
+                            } else if (arrowDirection == 2 || arrowDirection == 3)
+                            {
+                                validDeviations[validDeviations.Count - 1].ArrowFirstToSecond = true;
+                            }
+                        }
                         
                         map[map.Count - 1].Layers[map[map.Count - 1].Layers.Count - 1].Stillages.Add(new StillageItem()
                         {
@@ -132,6 +181,7 @@ namespace A100_AspNetCore.Services.MapEngineAPI.MapService
                             PmCount = pmCount,
                             Scale = scale,
                             IsBlockScaling = isBlockScaling,
+                            Deviations = validDeviations
                         });
                         // 
                         map[map.Count - 1].Layers[map[map.Count - 1].Layers.Count - 1].Stillages[map[map.Count - 1].Layers[map[map.Count - 1].Layers.Count - 1].Stillages.Count - 1].Viks = new List<VikItem>();

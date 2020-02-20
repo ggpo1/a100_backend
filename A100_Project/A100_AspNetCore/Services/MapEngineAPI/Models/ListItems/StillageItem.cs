@@ -18,7 +18,7 @@ namespace A100_AspNetCore.Services.MapEngineAPI.Models.ListItems
         public string Size { get; set; }
         public string Orientation { get; set; }
         public List<VikItem> Viks { get; set; }
-        public List<Object> Deviations { get; set; }
+        public List<DeviationItem> Deviations { get; set; }
         public List<PlaceSignatureItem> PlaceSignatures { get; set; }
         public SignatureItem Signature { get; set; }
         public decimal PmCount { get; set; }
