@@ -24,6 +24,8 @@ namespace A100_AspNetCore.Services.MapEngineAPI.Models.ListItems
         public decimal PmCount { get; set; }
         public int Scale { get; set; }
         public bool IsBlockScaling { get; set; }
+
+        public string Row { get; set; }
         // public int SpecificationsElementId { get; set; }
     }
     

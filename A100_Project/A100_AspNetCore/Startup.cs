@@ -16,6 +16,7 @@ using A100_AspNetCore.Services.API.RefreshTokenService;
 using A100_AspNetCore.Services.API.SchemeService;
 using A100_AspNetCore.Services.API.SpecificationsService;
 using A100_AspNetCore.Services.API.VikService;
+using A100_AspNetCore.Services.Globalsat.GlobalsatService;
 using A100_AspNetCore.Services.MapEngineAPI.MapService;
 using A100_AspNetCore.Services.MapEngineAPI.ProjectService;
 using A100_AspNetCore.Services.MapEngineAPI.WarehouseService;
@@ -154,6 +155,9 @@ namespace A100_AspNetCore
             services.AddScoped<IMapService, MapService>(); // сервис для работы с картой
             services.AddScoped<IProjectService, ProjectService>(); // сервис для работы с проектами
             services.AddScoped<IWarehouseService, WarehouseService>(); // сервис для работы с объектами
+            
+            // globalsat integration
+            services.AddScoped<IGlobalsatService, GlobalsatService>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -182,9 +186,7 @@ namespace A100_AspNetCore
 
             app.UseMvc(routes =>
             {
-                // routes.MapRoute(
-                //     name: "default",
-                //     template: "{controller=Map}/{action=GetMap}");
+                routes.MapRoute(name: "default", template: "{controller=Home}/{action=Get}");
             });
         }
     }

@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace A100_AspNetCore.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
 
@@ -26,9 +25,10 @@ namespace A100_AspNetCore.Controllers
 
 
         [HttpGet]
-        public string Get()
+        [Produces("text/html")]
+        public ActionResult<string> Get()
         {
-            return $"hello get";
+            return "A100 API";
         }
 
         public async Task<IActionResult> Index()

@@ -17,6 +17,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
 
 
         // Представления
+        public virtual DbQuery<v_GetUnitNamesByResoult> v_GetUnitNamesByResoult { get; set; }
         public virtual DbQuery<v_GetVik> v_GetVik { get; set; }
         public virtual DbQuery<v_GetControl> v_GetControl { get; set; }
         public virtual DbQuery<v_GetWork> v_GetWork { get; set; }
@@ -28,6 +29,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
         public virtual DbQuery<v_GetElementSize> v_GetElementSize { get; set; }
         public virtual DbQuery<v_GetSpecificationsWIthSize> v_GetSpecificationsWIthSize { get; set; }
         public virtual DbQuery<A100_MapEngine_DefectInfo> A100_MapEngine_DefectInfo { get; set; }
+        public virtual DbQuery<v_GetDeviationByUnit> v_GetDeviationByUnit { get; set; }
 
 
         // Таблицы        
@@ -93,6 +95,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
         public virtual DbSet<VikElement> VikElement { get; set; }
         public virtual DbSet<Warhouse> Warhouse { get; set; }
         public virtual DbSet<PartialTOProgress> PartialTOProgress { get; set; }
+        public virtual DbSet<GlobalsatSensors> GlobalsatSensors { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

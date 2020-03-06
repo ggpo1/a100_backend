@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using A100_AspNetCore.Services.MapEngineAPI.Models.DTO;
 
 namespace A100_AspNetCore.API.Controllers
 {
@@ -24,6 +25,20 @@ namespace A100_AspNetCore.API.Controllers
         public async Task<List<Map>> GetMap(int ResoultID)
         {
             return await service.GetMap(ResoultID);
+        }
+
+        [HttpGet]
+        [Route("unitnames")]
+        public async Task<List<GetUnitsDTO>> GetUnitsByResoult(int ResoultID)
+        {
+            return await service.GetUnitNamesByResoult(ResoultID);
+        }
+
+        [HttpGet]
+        [Route("byparams")]
+        public async Task<List<MapLayer>> GetMapByParams(int ResoultID, string UnitName, string UnitKey)
+        {
+            return await service.GetUnitLayersByUnitName(ResoultID, UnitName, UnitKey);
         }
 
     }
