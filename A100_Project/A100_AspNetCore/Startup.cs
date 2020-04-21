@@ -7,7 +7,7 @@ using A100_AspNetCore.Models.A100_Models.DataBase;
 using A100_AspNetCore.Models.API;
 using A100_AspNetCore.Models.Authentication;
 using A100_AspNetCore.Services.API;
-using A100_AspNetCore.Services.API.BackupService;
+// using A100_AspNetCore.Services.API.BackupService;
 using A100_AspNetCore.Services.API.CityService;
 using A100_AspNetCore.Services.API.EmployeesService;
 using A100_AspNetCore.Services.API.PartialService;
@@ -148,7 +148,7 @@ namespace A100_AspNetCore
             services.AddScoped<ISchemeService, SchemeService>(); // Сервис схемы (карта)
             services.AddScoped<IVikService, VikService>(); // VIK сервис (повреждения
             services.AddScoped<ISpecificationsService, SpecificationsService>(); // Сервис спецификаций
-            services.AddScoped<IBackupService, BackupService>(); // Сервис бекапов для android приложения
+            // services.AddScoped<IBackupService, BackupService>(); // Сервис бекапов для android приложения
             services.AddScoped<IPartialService, PartialService>(); // Сервис проведения ЧТО
 
             // сервисы для a100 MapEngine
