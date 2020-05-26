@@ -1,8 +1,11 @@
-﻿namespace A100_AspNetCore.Services.Globalsat.Models.DTO
+﻿using System;
+
+namespace A100_AspNetCore.Services.Globalsat.Models.DTO
 {
     public class AddDeviationsRequest
     {
-        public int SensorId { get; set; }
-        public int DeviationValue { get; set; }
+        public string SensorId { get; set; }
+        public float? DeviationValue { get; set; }
+        public DateTime DeviationDate { get; set; }
     }
 }

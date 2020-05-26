@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace A100_AspNetCore.Services.Globalsat.Models.DTO
+namespace A100_AspNetCore.Models.A100_Models.DataBase
 {
-    public class AddBangRequest
+    public class GlobalsatBangs
     {
-        public string SensorId { get; set; }
+        public int ID { get; set; }
+        public string SensorID { get; set; }
         public float? Strength { get; set; }
         public string Status { get; set; }
         public DateTime BangDate { get; set; }
