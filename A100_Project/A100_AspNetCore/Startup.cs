@@ -20,6 +20,7 @@ using A100_AspNetCore.Services.Globalsat.GlobalsatService;
 using A100_AspNetCore.Services.MapEngineAPI.MapService;
 using A100_AspNetCore.Services.MapEngineAPI.ProjectService;
 using A100_AspNetCore.Services.MapEngineAPI.WarehouseService;
+using A100_AspNetCore.Services.API.MapEngineGridService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -155,6 +156,7 @@ namespace A100_AspNetCore
             services.AddScoped<IMapService, MapService>(); // сервис для работы с картой
             services.AddScoped<IProjectService, ProjectService>(); // сервис для работы с проектами
             services.AddScoped<IWarehouseService, WarehouseService>(); // сервис для работы с объектами
+            services.AddScoped<IMapEngineGridService, MapEngineGridService>();
             
             // globalsat integration
             services.AddScoped<IGlobalsatService, GlobalsatService>();
