@@ -16,7 +16,7 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
         // select * from GetPagedDefects(5020, 20);
         public async Task<List<v_GetVikByUnit>> GetDefectPage(int ResoultID, int Page)
         {
-            var result = await MyDB.db.Set<v_GetVik>().FromSql("select * from GetPagedDefects(5020, 20)").ToListAsync();
+            var result = await MyDB.db.v_GetVik.FromSql("select * from GetPagedDefects(5020, 20)").ToListAsync();
             // FromSql($"select * from GetPagedDefects({ResoultID}, {Page})");
             return await Task.Run(() => new List<v_GetVikByUnit>());
         }
