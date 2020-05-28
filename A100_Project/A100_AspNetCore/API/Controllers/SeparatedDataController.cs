@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using A100_AspNetCore.Models.A100_Models.DataBase._Views;
 using A100_AspNetCore.Services.API.MapEngineGridService;
+using A100_AspNetCore.Models.A100_Models.DTO;
 
 
 namespace A100_AspNetCore.API.Controllers
@@ -25,6 +26,13 @@ namespace A100_AspNetCore.API.Controllers
         public async Task<List<Dictionary<string, object>>> GetSeparatedDefects(int ResoultID, int Page)
         {
             return await service.GetDefectPage(ResoultID, Page);
+        }
+
+        [HttpGet]
+        [Route("headers/defects")]
+        public async Task<List<HeaderItem>> GetDefectsHeaders()
+        {
+            return await service.GetDefectsHeaders();
         }
 
         #endregion

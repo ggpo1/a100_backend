@@ -7,8 +7,6 @@ using A100_AspNetCore.Models.A100_Models.DataBase;
 using A100_AspNetCore.Services.API._DBService;
 using System.Data.SqlClient;
 using System;
-using LinqToDB.Data;
-using Castle.MicroKernel.Registration;
 using A100_AspNetCore.Models.A100_Models.DTO;
 
 namespace A100_AspNetCore.Services.API.MapEngineGridService {
@@ -57,62 +55,7 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             throw new NotImplementedException();
         }
 
-        /*
-         {
-							key: 'place',
-							type: 'string',
-							title: 'Место',
-							isHide: false
-						},
-						{
-							key: 'level',
-							type: 'string',
-							title: 'Уровень',
-							isHide: false
-						},
-						{
-							key: 'elementName',
-							type: 'string',
-							title: 'Элемент',
-							isHide: false
-						},
-						{
-							key: 'size',
-							type: 'string',
-							title: 'Размер',
-							isHide: false
-						},
-						{
-							key: 'defectType',
-							type: 'string',
-							title: 'Тип дефекта',
-							isHide: false
-						},
-						{
-							key: 'riskLevel',
-							type: 'string',
-							title: 'Уровень риска',
-							isHide: false
-						},
-						{
-							key: 'comment',
-							type: 'string',
-							title: 'Комментарий',
-							isHide: true
-						},
-						{
-							key: 'browseDate',
-							type: 'string',
-							title: 'Дата обнаружения',
-							isHide: false
-						},
-						{
-							key: 'isDone',
-							type: 'boolean',
-							title: 'Исправлен',
-							isHide: false
-						}
-         */
+        
 
         public async Task<List<HeaderItem>> GetDefectsHeaders()
         {
@@ -121,26 +64,74 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             {
                 Key="row",
                 Type="string",
-                Title="Ряд",
+                Title="Р СЏРґ",
                 IsHide=false
             });
-
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="",
-                Type="",
-                Title="",
+                Key="place",
+                Type="string",
+                Title="РњРµСЃС‚Рѕ",
+                IsHide=false
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="level",
+                Type="string",
+                Title="РЈСЂРѕРІРµРЅСЊ",
+                IsHide=false
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="elementName",
+                Type="string",
+                Title="Р­Р»РµРјРµРЅС‚",
+                IsHide=false
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="size",
+                Type="string",
+                Title="Р Р°Р·РјРµСЂ",
+                IsHide=false
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="defectType",
+                Type="string",
+                Title="РўРёРї РґРµС„РµРєС‚Р°",
+                IsHide=false
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="riskLevel",
+                Type="string",
+                Title="РЈСЂРѕРІРµРЅСЊ СЂРёСЃРєР°",
+                IsHide=false
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="comment",
+                Type="string",
+                Title="РљРѕРјРјРµРЅС‚Р°СЂРёР№",
+                IsHide=true
+            });
+            defectsHeaders.Add(new HeaderItem()
+            {
+                Key="browseDate",
+                Type="string",
+                Title="Р”Р°С‚Р° РѕР±РЅР°СЂСѓР¶РµРЅРёСЏ",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
                 Key="isDone",
                 Type="boolean",
-                Title="Исправлен",
+                Title="РСЃРїСЂР°РІР»РµРЅ",
                 IsHide=false
             });
 
-            return defectsHeaders; 
+            return await Task.Run(() => defectsHeaders); 
         }
 
         
