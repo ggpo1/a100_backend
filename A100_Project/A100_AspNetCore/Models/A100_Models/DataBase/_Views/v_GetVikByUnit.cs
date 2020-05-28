@@ -2,6 +2,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase._Views
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
 
     public class v_GetVikByUnit
     {
@@ -61,5 +62,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase._Views
         public string Path { get; set; }
         public string ElementOrientation { get; set; }
         public string ManufacturedStillage { get; set; }
+
+        
     }
 }
