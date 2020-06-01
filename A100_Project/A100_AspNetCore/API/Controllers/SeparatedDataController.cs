@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using A100_AspNetCore.Models.A100_Models.DataBase._Views;
 using A100_AspNetCore.Services.API.MapEngineGridService;
 using A100_AspNetCore.Models.A100_Models.DTO;
-
+using A100_AspNetCore.Models.A100_Models.DataBase;
 
 namespace A100_AspNetCore.API.Controllers
 {
@@ -33,6 +33,20 @@ namespace A100_AspNetCore.API.Controllers
         public async Task<List<HeaderItem>> GetDefectsHeaders()
         {
             return await service.GetDefectsHeaders();
+        }
+
+        [HttpGet]
+        [Route("additional/elements")]
+        public async Task<List<Element>> GetElements()
+        {
+            return await service.GetElements();
+        }
+
+        [HttpGet]
+        [Route("additional/defecttypes")]
+        public async Task<List<DefectType>> GetDefectTypes()
+        {
+            return await service.GetDefectTypes();
         }
 
         #endregion

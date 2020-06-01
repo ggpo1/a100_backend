@@ -12,7 +12,6 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase._Views
 
         public int Frame { get; set; }
 
-
         public string nLevel { get; set; }
 
         public int? StructuralMemberID { get; set; }
@@ -60,9 +59,11 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase._Views
         public byte? ShowMode { get; set; }
 
         public string Path { get; set; }
+
         public string ElementOrientation { get; set; }
+
         public string ManufacturedStillage { get; set; }
 
-        
+        public string ElementSize { get; set; }
     }
 }

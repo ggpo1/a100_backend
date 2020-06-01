@@ -43,11 +43,34 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
                             string fieldName = rd.GetName(i);
                             readerObject.Add(fieldName, rd[fieldName]);
                         }
+
+                        if ((int)rd["RiskLevelID"] == 1)
+                        {
+                            readerObject.Add("backColor", "#88ee9b");
+                        }
+                        else if ((int)rd["RiskLevelID"] == 2)
+                        {
+                            readerObject.Add("backColor", "#fffad2");
+                        }
+                        else if ((int)rd["RiskLevelID"] == 3)
+                        {
+                            readerObject.Add("backColor", "#f37f82");
+                        }
                         defects.Add(readerObject);
                     }
                 }
             }
             return await Task.Run(() => defects);
+        }
+
+        public async Task<List<Element>> GetElements()
+        {
+            return await Task.Run(() => MyDB.db.Element.ToListAsync());
+        }
+
+        public async Task<List<DefectType>> GetDefectTypes()
+        {
+            return await Task.Run(() => MyDB.db.DefectType.ToListAsync());
         }
 
         public Task<Dictionary<string, bool>> IsDefectPageValid(int ResoultID, int Page)
@@ -62,64 +85,64 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             List<HeaderItem> defectsHeaders = new List<HeaderItem>();
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="row",
+                Key="Row",
                 Type="string",
                 Title="Ряд",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="place",
+                Key="Frame",
                 Type="string",
                 Title="Место",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="level",
+                Key="nLevel",
                 Type="string",
                 Title="Уровень",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="elementName",
+                Key="ElementID",
                 Type="string",
                 Title="Элемент",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="size",
+                Key="ElementSize",
                 Type="string",
                 Title="Размер",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="defectType",
+                Key="DefectID",
                 Type="string",
                 Title="Тип дефекта",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="riskLevel",
+                Key= "RiskLevelID",
                 Type="string",
                 Title="Уровень риска",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="comment",
+                Key= "cComment",
                 Type="string",
                 Title="Комментарий",
                 IsHide=true
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="browseDate",
-                Type="string",
+                Key= "UpdateTime",
+                Type="dateTime",
                 Title="Дата обнаружения",
                 IsHide=false
             });
