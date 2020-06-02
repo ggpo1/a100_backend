@@ -20,12 +20,26 @@ namespace A100_AspNetCore.API.Controllers
         }
 
         #region Defects queries section
-    
+
         [HttpGet]
-        [Route("defects")]
+        [Route("back/defects")]
         public async Task<List<Dictionary<string, object>>> GetSeparatedDefects(int ResoultID, int Page)
         {
             return await service.GetDefectPage(ResoultID, Page);
+        }
+
+        [HttpGet]
+        [Route("defects")]
+        public async Task<List<Dictionary<string, object>>> GetDefectsPageSepByBack(int ResoultID, int Page)
+        {
+            return await service.GetDefectPageSepByBack(ResoultID, Page);
+        }
+
+        [HttpGet]
+        [Route("all/defects")]
+        public async Task<List<v_GetVikByUnit>> GetWholeDefects(int ResoultID)
+        {
+            return await service.GetWholeDefects(ResoultID);
         }
 
         [HttpGet]

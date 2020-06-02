@@ -8,6 +8,8 @@ using A100_AspNetCore.Services.API._DBService;
 using System.Data.SqlClient;
 using System;
 using A100_AspNetCore.Models.A100_Models.DTO;
+using System.Linq;
+using System.Dynamic;
 
 namespace A100_AspNetCore.Services.API.MapEngineGridService {
     public class MapEngineGridService : IMapEngineGridService {
@@ -17,6 +19,58 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
         public async Task<int> GetDefectPagesCount(int ResoultID)
         {
             return await Task.Run(() => 0);
+        }
+
+        public async Task<List<v_GetVikByUnit>> GetWholeDefects(int ResoultID)
+        {
+            return await Task.Run(() => MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID).ToListAsync());
+        }
+
+        public async Task<List<Dictionary<string, object>>> GetDefectPageSepByBack(int ResoultID, int Page)
+        {
+            const int PAGE_DEFECTS_COUNT = 10;
+            int from = Page * PAGE_DEFECTS_COUNT;
+            int to = from + PAGE_DEFECTS_COUNT;
+
+            var defects = await MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID).ToListAsync();
+
+            List<Dictionary<string, object>> resultList = new List<Dictionary<string, object>>();
+            
+            try
+            {
+                for (int i = from; i < to; i++)
+                {
+                    Dictionary<string, object> temp = new Dictionary<string, object>();
+                    // var expando = new ExpandoObject();
+                    // var dictionary = (IDictionary<string, object>)expando;
+
+                    foreach (var property in defects[i].GetType().GetProperties())
+                    {
+                        string fieldName = property.Name;
+                        string _normal = fieldName[0].ToString().ToLower() + fieldName.Substring(1);
+
+                        temp.Add(_normal, property.GetValue(defects[i]));
+                    }
+
+                    if (defects[i].RiskLevelID == 1)
+                    {
+                        temp.Add("backColor", "#88ee9b");
+                    }
+                    else if (defects[i].RiskLevelID == 2)
+                    {
+                        temp.Add("backColor", "#fffad2");
+                    }
+                    else if (defects[i].RiskLevelID == 3)
+                    {
+                        temp.Add("backColor", "#f37f82");
+                    }
+
+                resultList.Add(temp);
+                }
+            }
+            catch (Exception ex) { }
+
+            return await Task.Run(() => resultList);
         }
 
         public async Task<List<Dictionary<string, object>>> GetDefectPage(int ResoultID, int Page)
@@ -41,7 +95,8 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
                         for (int i = 0; i < rd.FieldCount; i++)
                         {
                             string fieldName = rd.GetName(i);
-                            readerObject.Add(fieldName, rd[fieldName]);
+                            string _normal = fieldName[0].ToString().ToLower() + fieldName.Substring(1);
+                            readerObject.Add(_normal, rd[fieldName]);
                         }
 
                         if ((int)rd["RiskLevelID"] == 1)
@@ -85,14 +140,14 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             List<HeaderItem> defectsHeaders = new List<HeaderItem>();
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="Row",
+                Key="row",
                 Type="string",
                 Title="Ряд",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="Frame",
+                Key="frame",
                 Type="string",
                 Title="Место",
                 IsHide=false
@@ -106,28 +161,28 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="ElementID",
+                Key="elementID",
                 Type="string",
                 Title="Элемент",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="ElementSize",
+                Key="elementSize",
                 Type="string",
                 Title="Размер",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key="DefectID",
+                Key="defectID",
                 Type="string",
                 Title="Тип дефекта",
                 IsHide=false
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key= "RiskLevelID",
+                Key= "riskLevelID",
                 Type="string",
                 Title="Уровень риска",
                 IsHide=false
@@ -141,7 +196,7 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             });
             defectsHeaders.Add(new HeaderItem()
             {
-                Key= "UpdateTime",
+                Key= "updateTime",
                 Type="dateTime",
                 Title="Дата обнаружения",
                 IsHide=false
