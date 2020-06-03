@@ -13,6 +13,6 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
         Task<List<Element>> GetElements();
         Task<List<DefectType>> GetDefectTypes();
         Task<List<Dictionary<string, object>>> GetDefectPage(int ResoultID, int Page);
-        Task<List<v_GetVikByUnit>> GetWholeDefects(int ResoultID);
+        Task<List<Dictionary<string, object>>> GetWholeDefects(int ResoultID);
     }
 }

@@ -37,7 +37,7 @@ namespace A100_AspNetCore.API.Controllers
 
         [HttpGet]
         [Route("all/defects")]
-        public async Task<List<v_GetVikByUnit>> GetWholeDefects(int ResoultID)
+        public async Task<List<Dictionary<string, object>>> GetWholeDefects(int ResoultID)
         {
             return await service.GetWholeDefects(ResoultID);
         }

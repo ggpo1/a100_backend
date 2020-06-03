@@ -21,9 +21,40 @@ namespace A100_AspNetCore.Services.API.MapEngineGridService {
             return await Task.Run(() => 0);
         }
 
-        public async Task<List<v_GetVikByUnit>> GetWholeDefects(int ResoultID)
+        public async Task<List<Dictionary<string, object>>> GetWholeDefects(int ResoultID)
         {
-            return await Task.Run(() => MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID).ToListAsync());
+            // добавить цвет
+
+            var defects = await MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID).ToListAsync();
+            List<Dictionary<string, object>> resultList = new List<Dictionary<string, object>>();
+            foreach (var defect in defects)
+            {
+                Dictionary<string, object> temp = new Dictionary<string, object>();
+                foreach (var property in defect.GetType().GetProperties())
+                {
+                    string fieldName = property.Name;
+                    string _normal = fieldName[0].ToString().ToLower() + fieldName.Substring(1);
+
+                    temp.Add(_normal, property.GetValue(defect));
+                }
+
+                if (defect.RiskLevelID == 1)
+                {
+                    temp.Add("backColor", "#88ee9b");
+                }
+                else if (defect.RiskLevelID == 2)
+                {
+                    temp.Add("backColor", "#fffad2");
+                }
+                else if (defect.RiskLevelID == 3)
+                {
+                    temp.Add("backColor", "#f37f82");
+                }
+
+                resultList.Add(temp);
+            }
+
+            return await Task.Run(() => resultList);
         }
 
         public async Task<List<Dictionary<string, object>>> GetDefectPageSepByBack(int ResoultID, int Page)
