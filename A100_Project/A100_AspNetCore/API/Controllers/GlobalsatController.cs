@@ -36,7 +36,7 @@ namespace A100_AspNetCore.API.Controllers
             else if (response.StatusCode == 400)
                 return BadRequest(response);
             return response;
-;        }
+        }
 
 
         [HttpGet]
