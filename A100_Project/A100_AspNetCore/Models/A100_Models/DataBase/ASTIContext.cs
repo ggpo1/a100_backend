@@ -32,8 +32,9 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
         public virtual DbQuery<v_GetDeviationByUnit> v_GetDeviationByUnit { get; set; }
         public virtual DbQuery<v_GetSensor> v_GetSensor { get; set; }
         public virtual DbQuery<v_GetBang> v_GetBang { get; set; }
-
+        public virtual DbQuery<v_GetUnits> v_GetUnits { get; set; } 
         public virtual DbQuery<v_GetGlobalsatDeviation> v_GetGlobalsatDeviation { get; set; }
+        public virtual DbQuery<v_GetWmsFields> v_GetWmsFields { get; set; }
 
 
         // Таблицы        
@@ -102,6 +103,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
         public virtual DbSet<GlobalsatSensors> GlobalsatSensors { get; set; }
         public virtual DbSet<GlobalsatBangs> GlobalsatBangs { get; set; }
         public virtual DbSet<GlobalsatDeviations> GlobalsatDeviations { get; set; }
+        public virtual DbSet<WmsFields> WmsFields { get; set; }
         
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

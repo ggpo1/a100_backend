@@ -15,6 +15,37 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 {
     public class GlobalsatService : IGlobalsatService
     {
+
+        public async Task<List<string>> GetUnitsByResoult(int ResoultID)
+        {
+            var dbUnits = await MyDB.db.v_GetUnits.Where(el => el.ResoultID == ResoultID).ToListAsync();
+
+            List<string> unitsList = new List<string>();
+            foreach (var unit in dbUnits)
+                unitsList.Add(unit.UnitName);
+
+            return await Task.Run(() => unitsList);
+        }
+
+        public async Task<List<v_GetWmsFields>> GetWmsFields(int ResoultID)
+        {
+            return await Task.Run(() => MyDB.db.v_GetWmsFields.Where(el => el.ResoultID == ResoultID).ToListAsync());
+        }
+
+
+
+
+
+        public async Task<List<GlobalsatSensors>> GetSensors()
+        {
+            return await Task.Run(() => MyDB.db.GlobalsatSensors.ToListAsync());
+        }
+
+        public async Task<List<GlobalsatSensors>> GetSensorsByResoult(int ResoultID)
+        {
+            return await Task.Run(() => MyDB.db.GlobalsatSensors.Where(el => el.ResoultID == ResoultID).ToListAsync());
+        }
+
         public async Task<Object> AddBang(List<AddBangRequest> data)
         {
             int i = 0;
