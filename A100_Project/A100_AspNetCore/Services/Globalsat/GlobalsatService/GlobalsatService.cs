@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using A100_AspNetCore.Models.A100_Models.DataBase;
 using A100_AspNetCore.Models.A100_Models.DataBase._Views;
+using A100_AspNetCore.Models.A100_Models.DTO;
 using A100_AspNetCore.Services.API._DBService;
 using A100_AspNetCore.Services.Globalsat.Models.DTO;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,86 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 {
     public class GlobalsatService : IGlobalsatService
     {
+
+        public async Task<object> RemoveWmsField(int ID)
+        {
+            var field = await MyDB.db.WmsFields.FirstOrDefaultAsync(el => el.ID == ID);
+
+            var result = MyDB.db.WmsFields.Remove(field);
+            MyDB.db.SaveChanges();
+
+            return await Task.Run(() => result.Entity);
+        }
+
+        public async Task<WmsFields> AddNewWmsField(DTOAddWmsField NewField)
+        {
+            WmsFields _temp = new WmsFields()
+            {
+                SensorID = NewField.SensorID,
+                FieldName = NewField.FieldName,
+                Value = NewField.Value,
+                ResoultID = NewField.ResoultID
+            };
+            var result = MyDB.db.WmsFields.Add(_temp);
+            MyDB.db.SaveChanges();
+            return await Task.Run(() => result.Entity);
+        }
+
+        public async Task<List<Dictionary<string, object>>> GetDeviationsWithWmsData(int ResoultID)
+        {
+            List<v_GetGlobalsatDeviation> deviations = await MyDB.db.v_GetGlobalsatDeviation.Where(el => el.ResoultID == ResoultID).ToListAsync();
+            List<v_GetWmsFields> wmsFields = await MyDB.db.v_GetWmsFields.Where(el => el.ResoultID == ResoultID).ToListAsync();
+
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+            foreach (var deviation in deviations)
+            {
+                Dictionary<string, object> temp = new Dictionary<string, object>();
+
+                foreach (var property in deviation.GetType().GetProperties())
+                {
+                    string fieldName = property.Name;
+                    string _normal = fieldName[0].ToString().ToLower() + fieldName.Substring(1);
+                    temp.Add(_normal, property.GetValue(deviation));
+                }
+
+                var fields = wmsFields.Where(el => el.SensorID == deviation.SensorID).ToList();
+                foreach (var field in fields)
+                    temp.Add(field.FieldName, field.Value);
+
+                result.Add(temp);
+            }
+
+
+            return await Task.Run(() => result);
+        }
+
+        public async Task<List<Dictionary<string, object>>> GetBangsWithWmsData(int ResoultID)
+        {
+            List<v_GetBang> bangs = await MyDB.db.v_GetBang.Where(el => el.ResoultID == ResoultID).ToListAsync();
+            List<v_GetWmsFields> wmsFields = await MyDB.db.v_GetWmsFields.Where(el => el.ResoultID == ResoultID).ToListAsync();
+
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+
+            foreach (var bang in bangs)
+            {
+                Dictionary<string, object> temp = new Dictionary<string, object>();
+                foreach (var property in bang.GetType().GetProperties())
+                {
+                    string fieldName = property.Name;
+                    string _normal = fieldName[0].ToString().ToLower() + fieldName.Substring(1);
+                    temp.Add(_normal, property.GetValue(bang));
+                }
+
+                var fields = wmsFields.Where(el => el.SensorID == bang.SensorID).ToList();
+
+                foreach (var field in fields)
+                    temp.Add(field.FieldName, field.Value);
+
+                result.Add(temp);
+            }
+
+            return await Task.Run(() => result);
+        }
 
         public async Task<List<string>> GetUnitsByResoult(int ResoultID)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using A100_AspNetCore.Models.A100_Models.DataBase;
 using A100_AspNetCore.Models.A100_Models.DataBase._Views;
+using A100_AspNetCore.Models.A100_Models.DTO;
 using A100_AspNetCore.Services.Globalsat.Models.DTO;
 
 namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
@@ -21,6 +22,9 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 
         Task<List<string>> GetUnitsByResoult(int ResoultID);
         Task<List<v_GetWmsFields>> GetWmsFields(int ResoultID);
-        
+        Task<List<Dictionary<string, object>>> GetBangsWithWmsData(int ResoultID);
+        Task<List<Dictionary<string, object>>> GetDeviationsWithWmsData(int ResoultID);
+        Task<WmsFields> AddNewWmsField(DTOAddWmsField NewField);
+        Task<object> RemoveWmsField(int ID);
     }
 }
