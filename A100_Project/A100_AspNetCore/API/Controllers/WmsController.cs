@@ -63,5 +63,12 @@ namespace A100_AspNetCore.API.Controllers
             return await service.RemoveWmsField(ID);
         }
 
+        [HttpGet]
+        [Route("rows")]
+        public async Task<List<v_GetUniqRows>> GetUniqRowsByResoult(int ResoultID)
+        {
+            return await service.GetStillagesRowsByResoultID(ResoultID);
+        }
+
     }
 }

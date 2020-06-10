@@ -26,5 +26,6 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<List<Dictionary<string, object>>> GetDeviationsWithWmsData(int ResoultID);
         Task<WmsFields> AddNewWmsField(DTOAddWmsField NewField);
         Task<object> RemoveWmsField(int ID);
+        Task<List<v_GetUniqRows>> GetStillagesRowsByResoultID(int ResoultID);
     }
 }
