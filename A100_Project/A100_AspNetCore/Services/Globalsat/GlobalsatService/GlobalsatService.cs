@@ -16,6 +16,12 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
     public class GlobalsatService : IGlobalsatService
     {
 
+        public async Task<List<Dictionary<string, object>>> GetBangsWithWmsData(int ResoultID)
+        { 
+            
+        }
+
+
         public async Task<List<string>> GetUnitsByResoult(int ResoultID)
         {
             var dbUnits = await MyDB.db.v_GetUnits.Where(el => el.ResoultID == ResoultID).ToListAsync();
