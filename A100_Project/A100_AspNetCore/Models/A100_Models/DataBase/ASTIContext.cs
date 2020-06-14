@@ -35,6 +35,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
         public virtual DbQuery<v_GetUnits> v_GetUnits { get; set; } 
         public virtual DbQuery<v_GetGlobalsatDeviation> v_GetGlobalsatDeviation { get; set; }
         public virtual DbQuery<v_GetWmsFields> v_GetWmsFields { get; set; }
+        public virtual DbQuery<v_GetUniqRows> v_GetUniqRows { get; set; }
 
 
         // Таблицы        
@@ -104,6 +105,7 @@ namespace A100_AspNetCore.Models.A100_Models.DataBase
         public virtual DbSet<GlobalsatBangs> GlobalsatBangs { get; set; }
         public virtual DbSet<GlobalsatDeviations> GlobalsatDeviations { get; set; }
         public virtual DbSet<WmsFields> WmsFields { get; set; }
+        public virtual DbSet<WmsAddressing> WmsAddressing { get; set; }
         
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
