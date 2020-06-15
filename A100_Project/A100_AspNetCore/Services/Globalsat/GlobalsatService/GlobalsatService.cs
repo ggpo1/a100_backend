@@ -111,6 +111,13 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 
         #region методы для дашборда
 
+        public async Task<object> SetAddressationRows(List<DTOSetRows> Rows)
+        {
+
+
+            return await Task.Run(() => new { sendObj = Rows });
+        }
+
         public async Task<List<WmsAddressing>> GetWmsAddressing(int ResoultID)
         {
             return await Task.Run(() => MyDB.db.WmsAddressing.Where(el => el.ResoultID == ResoultID).ToListAsync());

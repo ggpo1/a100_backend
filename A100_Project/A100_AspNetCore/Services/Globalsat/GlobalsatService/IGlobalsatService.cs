@@ -28,5 +28,7 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<object> RemoveWmsField(int ID);
         Task<List<v_GetUniqRows>> GetStillagesRowsByResoultID(int ResoultID);
         Task<List<WmsAddressing>> GetWmsAddressing(int ResoultID);
+
+        Task<object> SetAddressationRows(List<DTOSetRows> Rows);
     }
 }

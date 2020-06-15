@@ -3,6 +3,7 @@ using A100_AspNetCore.Models.A100_Models.DataBase._Views;
 using A100_AspNetCore.Models.A100_Models.DTO;
 using A100_AspNetCore.Services.Globalsat.GlobalsatService;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,13 @@ namespace A100_AspNetCore.API.Controllers
         public async Task<List<WmsAddressing>> GetWmsAddressing(int ResoultID)
         {
             return await service.GetWmsAddressing(ResoultID);
+        }
+
+        [HttpPost]
+        [Route("wmsrows")]
+        public async Task<object> SetAddressingRows([FromBody] List<DTOSetRows> Rows)
+        {
+            return await service.SetAddressationRows(Rows);
         }
 
     }
