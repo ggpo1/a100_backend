@@ -111,9 +111,29 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 
         #region методы для дашборда
 
-        public async Task<object> SetAddressationRows(List<DTOSetRows> Rows)
+        public async Task<object> SetAddressationRows(List<WmsAddressing> Rows)
         {
+            foreach (var row in Rows)
+            {
+                if (row.ID <= -1)
+                {
+                    MyDB.db.WmsAddressing.Add(new WmsAddressing() 
+                    {
+                        A100Row=row.A100Row,
+                        WmsRow=row.WmsRow,
+                        ResoultID=row.ResoultID,
+                        MapUnit=row.MapUnit
+                    });
+                }
+                else
+                {
+                    var _row = MyDB.db.WmsAddressing.FirstOrDefault(el => el.ID == row.ID);
+                    _row.WmsRow = row.WmsRow;
+                    MyDB.db.Update(_row);
+                }
+            }
 
+            MyDB.db.SaveChanges();
 
             return await Task.Run(() => new { sendObj = Rows });
         }

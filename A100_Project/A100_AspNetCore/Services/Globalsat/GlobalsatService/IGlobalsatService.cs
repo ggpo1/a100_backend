@@ -29,6 +29,6 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<List<v_GetUniqRows>> GetStillagesRowsByResoultID(int ResoultID);
         Task<List<WmsAddressing>> GetWmsAddressing(int ResoultID);
 
-        Task<object> SetAddressationRows(List<DTOSetRows> Rows);
+        Task<object> SetAddressationRows(List<WmsAddressing> Rows);
     }
 }

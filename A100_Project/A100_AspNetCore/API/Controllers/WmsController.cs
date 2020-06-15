@@ -80,7 +80,7 @@ namespace A100_AspNetCore.API.Controllers
 
         [HttpPost]
         [Route("wmsrows")]
-        public async Task<object> SetAddressingRows([FromBody] List<DTOSetRows> Rows)
+        public async Task<object> SetAddressingRows([FromBody] List<WmsAddressing> Rows)
         {
             return await service.SetAddressationRows(Rows);
         }
