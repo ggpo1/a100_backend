@@ -20,6 +20,45 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 
         #region методы API для WMS
 
+        public async Task<List<v_GetVikByUnit>> GetViksWithAddressation(int ResoultID)
+        {
+            var viks = await MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID).ToListAsync();
+            var wmsAddressation = await MyDB.db.WmsAddressing.Where(el => el.ResoultID == ResoultID).ToListAsync();
+            var units = await GetUnitsByResoult(ResoultID);
+
+            List<v_GetVikByUnit> result = new List<v_GetVikByUnit>();
+
+            units.ForEach(el => {
+
+            });
+
+            return await Task.Run(() => viks);
+        }
+
+        public async Task<List<v_GetVikByUnit>> GetViksWithAddressationByUnit(int ResoultID, string UnitName)
+        {
+            var viks = await MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID && el.UnitName == UnitName).ToListAsync();
+            var wmsAddressation = await MyDB.db.WmsAddressing.Where(el => el.ResoultID == ResoultID).ToListAsync();
+
+            List<v_GetVikByUnit> result = new List<v_GetVikByUnit>();
+            viks.ForEach(el => {
+                WmsAddressing wmsAddress = new WmsAddressing();
+                try
+                {
+                    wmsAddress = wmsAddressation.First(adr => adr.A100Row == el.Row);
+                }
+                catch (InvalidOperationException e)
+                {
+                    wmsAddress = null;
+                }
+                result.Add(el);
+                if (wmsAddress != null)
+                    result[result.Count - 1].Row = wmsAddress.WmsRow;
+            });
+
+            return await Task.Run(() => result);
+        }
+
         // Метод получения данных об ударах с дополнительными полями
         public async Task<List<Dictionary<string, object>>> GetBangsWithWmsData(int ResoultID)
         {

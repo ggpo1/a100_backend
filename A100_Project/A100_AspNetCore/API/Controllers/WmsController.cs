@@ -85,5 +85,15 @@ namespace A100_AspNetCore.API.Controllers
             return await service.SetAddressationRows(Rows);
         }
 
+        [HttpGet]
+        [Route("viks")]
+        public async Task<List<v_GetVikByUnit>> GetViks(int ResoultID, string UnitName)
+        {
+            if (UnitName == null)
+                return await service.GetViksWithAddressation(ResoultID);
+            else
+                return await service.GetViksWithAddressationByUnit(ResoultID, UnitName);
+        }
+
     }
 }

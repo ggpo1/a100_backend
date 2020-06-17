@@ -16,7 +16,7 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<List<GlobalsatSensors>> GetSensors();
         Task<List<GlobalsatSensors>> GetSensorsByResoult(int ResoultID);
         Task<List<v_GetBang>> GetBangsByResoult(int resoultID);
-        
+
         Task<Object> AddDeviations(List<AddDeviationsRequest> data);
         Task<List<v_GetGlobalsatDeviation>> GetDeviationsByResoult(int resoultID);
 
@@ -28,7 +28,8 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<object> RemoveWmsField(int ID);
         Task<List<v_GetUniqRows>> GetStillagesRowsByResoultID(int ResoultID);
         Task<List<WmsAddressing>> GetWmsAddressing(int ResoultID);
-
         Task<object> SetAddressationRows(List<WmsAddressing> Rows);
+        Task<List<v_GetVikByUnit>> GetViksWithAddressationByUnit(int ResoultID, string UnitName);
+        Task<List<v_GetVikByUnit>> GetViksWithAddressation(int ResoultID);
     }
 }
