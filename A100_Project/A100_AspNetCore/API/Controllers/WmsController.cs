@@ -87,7 +87,7 @@ namespace A100_AspNetCore.API.Controllers
 
         [HttpGet]
         [Route("viks")]
-        public async Task<List<v_GetVikByUnit>> GetViks(int ResoultID, string UnitName)
+        public async Task<List<DTOWmsGetViks>> GetViks(int ResoultID, string UnitName)
         {
             if (UnitName == null)
                 return await service.GetViksWithAddressation(ResoultID);

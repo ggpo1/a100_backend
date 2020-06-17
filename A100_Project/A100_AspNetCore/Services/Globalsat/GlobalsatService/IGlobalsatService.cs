@@ -29,7 +29,7 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<List<v_GetUniqRows>> GetStillagesRowsByResoultID(int ResoultID);
         Task<List<WmsAddressing>> GetWmsAddressing(int ResoultID);
         Task<object> SetAddressationRows(List<WmsAddressing> Rows);
-        Task<List<v_GetVikByUnit>> GetViksWithAddressationByUnit(int ResoultID, string UnitName);
-        Task<List<v_GetVikByUnit>> GetViksWithAddressation(int ResoultID);
+        Task<List<DTOWmsGetViks>> GetViksWithAddressationByUnit(int ResoultID, string UnitName);
+        Task<List<DTOWmsGetViks>> GetViksWithAddressation(int ResoultID);
     }
 }

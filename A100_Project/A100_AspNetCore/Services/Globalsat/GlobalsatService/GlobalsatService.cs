@@ -20,41 +20,86 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 
         #region методы API для WMS
 
-        public async Task<List<v_GetVikByUnit>> GetViksWithAddressation(int ResoultID)
+        public async Task<List<DTOWmsGetViks>> GetViksWithAddressation(int ResoultID)
         {
             var viks = await MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID).ToListAsync();
             var wmsAddressation = await MyDB.db.WmsAddressing.Where(el => el.ResoultID == ResoultID).ToListAsync();
             var units = await GetUnitsByResoult(ResoultID);
 
-            List<v_GetVikByUnit> result = new List<v_GetVikByUnit>();
+            List<DTOWmsGetViks> result = new List<DTOWmsGetViks>();
 
-            units.ForEach(el => {
+            for (int i = 0; i < viks.Count; i++)
+            {
+                WmsAddressing addressation = new WmsAddressing();
+                try
+                {
+                    addressation = wmsAddressation.First(el => el.A100Row == viks[i].Row && el.MapUnit == viks[i].UnitName);
+                }
+                catch (InvalidOperationException)
+                {
+                    addressation = null;
+                }
 
-            });
+                var element = await GetElementByID(viks[i].ElementID);
+                DTOWmsGetViks validVik = new DTOWmsGetViks(
+                    viks[i].VikID,
+                    viks[i].Row,
+                    viks[i].Frame,
+                    viks[i].nLevel,
+                    GetRiskLevelByID(viks[i].RiskLevelID),
+                    element.ElementName,
+                    viks[i].cComment,
+                    viks[i].ElementOrientation,
+                    viks[i].ManufacturedStillage,
+                    viks[i].UnitName,
+                    viks[i].ResoultID
+                );
+                result.Add(validVik);
 
-            return await Task.Run(() => viks);
+                if (addressation != null)
+                    result[result.Count - 1].Row = addressation.WmsRow;
+            }
+
+            return await Task.Run(() => result);
         }
 
-        public async Task<List<v_GetVikByUnit>> GetViksWithAddressationByUnit(int ResoultID, string UnitName)
+        public async Task<List<DTOWmsGetViks>> GetViksWithAddressationByUnit(int ResoultID, string UnitName)
         {
             var viks = await MyDB.db.v_GetVikByUnit.Where(el => el.ResoultID == ResoultID && el.UnitName == UnitName).ToListAsync();
-            var wmsAddressation = await MyDB.db.WmsAddressing.Where(el => el.ResoultID == ResoultID).ToListAsync();
+            var wmsAddressation = await MyDB.db.WmsAddressing.Where(el => el.ResoultID == ResoultID && el.MapUnit == UnitName).ToListAsync();
 
-            List<v_GetVikByUnit> result = new List<v_GetVikByUnit>();
-            viks.ForEach(el => {
+            List<DTOWmsGetViks> result = new List<DTOWmsGetViks>();
+            for (int i = 0; i < viks.Count; i++)
+            { 
                 WmsAddressing wmsAddress = new WmsAddressing();
                 try
                 {
-                    wmsAddress = wmsAddressation.First(adr => adr.A100Row == el.Row);
+                    wmsAddress = wmsAddressation.First(adr => adr.A100Row == viks[i].Row);
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                     wmsAddress = null;
                 }
-                result.Add(el);
+
+                var element = await GetElementByID(viks[i].ElementID);
+                DTOWmsGetViks validVik = new DTOWmsGetViks(
+                    viks[i].VikID,
+                    viks[i].Row,
+                    viks[i].Frame,
+                    viks[i].nLevel,
+                    GetRiskLevelByID(viks[i].RiskLevelID),
+                    element.ElementName,
+                    viks[i].cComment,
+                    viks[i].ElementOrientation,
+                    viks[i].ManufacturedStillage,
+                    viks[i].UnitName,
+                    viks[i].ResoultID
+                );
+                result.Add(validVik);
+
                 if (wmsAddress != null)
                     result[result.Count - 1].Row = wmsAddress.WmsRow;
-            });
+            };
 
             return await Task.Run(() => result);
         }
@@ -321,6 +366,23 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
 
 
         #region остальные методы
+
+        public string GetRiskLevelByID(int? ID)
+        {
+            if (ID == 1)
+                return "GREEN";
+            else if (ID == 2)
+                return "YELLOW";
+            else if (ID == 3)
+                return "RED";
+            else
+                return "";
+        }
+
+        public async Task<Element> GetElementByID(int? ID)
+        {
+            return await MyDB.db.Element.FirstOrDefaultAsync(el => el.ElementId == ID);
+        }
 
         public async Task<List<v_GetBang>> GetBangsByResoult(int resoultID)
         {
