@@ -171,7 +171,7 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         }
 
         // Метод для получения фотографии к повреждению
-        public Task<DTOPhoto> GetVikPhoto(int ResoultID, int VikID)
+        public async Task<DTOPhoto> GetVikPhoto(int ResoultID, int VikID)
         {
             string appData = @"C:/inetpub/wwwroot/asti/Content";
             string photoPath = $"{appData}/{ResoultID}/VIK/{VikID}.jpg";
@@ -184,10 +184,10 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
                 objfilestream.Read(bImg, 0, len);
                 objfilestream.Close();
                 DTOPhoto resp = new DTOPhoto { photo = bImg };
-                return Task.Run(() => resp);
+                return await Task.Run(() => resp);
             }
             DTOPhoto nullResp = new DTOPhoto { photo = null };
-            return Task.Run(() => nullResp);
+            return await Task.Run(() => nullResp);
         }
 
         #endregion

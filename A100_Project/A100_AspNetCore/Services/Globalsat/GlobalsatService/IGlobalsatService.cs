@@ -31,5 +31,6 @@ namespace A100_AspNetCore.Services.Globalsat.GlobalsatService
         Task<object> SetAddressationRows(List<WmsAddressing> Rows);
         Task<List<DTOWmsGetViks>> GetViksWithAddressationByUnit(int ResoultID, string UnitName);
         Task<List<DTOWmsGetViks>> GetViksWithAddressation(int ResoultID);
+        Task<DTOPhoto> GetVikPhoto(int ResoultID, int VikID);
     }
 }

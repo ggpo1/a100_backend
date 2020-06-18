@@ -95,5 +95,12 @@ namespace A100_AspNetCore.API.Controllers
                 return await service.GetViksWithAddressationByUnit(ResoultID, UnitName);
         }
 
+        [HttpGet]
+        [Route("viks/photo")]
+        public async Task<DTOPhoto> GetVikPhotoByID(int ResoultID, int VikID)
+        {
+            return await service.GetVikPhoto(ResoultID, VikID);
+        }
+
     }
 }
